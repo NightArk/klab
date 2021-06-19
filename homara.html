@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+  <script>
+    window.onload = function(){
+    var tank = [];
+
+
+    var chart = new chartJS.Chart("chartContainer", {
+      data: [{
+        type: "line",
+        datapoints: tank
+      }]
+    });
+    var dataLength = 20;
+    const fs = require('fs')
+
+    fs.readFile('re.txt', 'utf8', (err, data) => {
+      if (err) {
+        console.error(err)
+        return
+      }
+      doom = data.split("\n")
+    })
+    fs.readFile('de.txt', 'utf8', (err, dat) => {
+      if (err) {
+        console.error(err)
+        return
+      }
+      dom = dat.split("\n")
+    })
+    var updateChart = function (count) {
+
+      count = count || 1;
+
+      for (var j = 0; j < count; j++) {
+        yVal = doom[j];
+        xVal = dom[j];
+        tank.push({
+          x: xVal,
+          y: yVal
+        });
+      }
+      chart.render();
+    };
+  }
+
+  </script>
+</body>
+
+</html>
