@@ -5,56 +5,52 @@
   <meta charset="UTF-8">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
 
 <body>
-  <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+  <canvas id="chart" height= '400' width= '400'></canvas>
   <script>
-    window.onload = function(){
-    var tank = [];
+    draw();
+    
+   async function draw(){
+     const data = await getData();
+var ctx = document.getElementById('chart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: data.xAxe,
+        datasets: [{
+            label: 'Temperature',
+            data: data.yAxe,
+            fill: false,
+            backgroundColor: 'blue',
+            borderColor: 'yellow',
+            borderWidth: 1
+        }]
+    }
+});
+   }
+async function getData(){
+  const xAxe = [];
+  const yAxe = [];
 
+response = await fetch('de.txt');
+data = await response.text();
 
-    var chart = new chartJS.Chart("chartContainer", {
-      data: [{
-        type: "line",
-        datapoints: tank
-      }]
-    });
-    var dataLength = 20;
-    const fs = require('fs')
-
-    fs.readFile('re.txt', 'utf8', (err, data) => {
-      if (err) {
-        console.error(err)
-        return
-      }
-      doom = data.split("\n")
-    })
-    fs.readFile('de.txt', 'utf8', (err, dat) => {
-      if (err) {
-        console.error(err)
-        return
-      }
-      dom = dat.split("\n")
-    })
-    var updateChart = function (count) {
-
-      count = count || 1;
-
-      for (var j = 0; j < count; j++) {
-        yVal = doom[j];
-        xVal = dom[j];
-        tank.push({
-          x: xVal,
-          y: yVal
-        });
-      }
-      chart.render();
-    };
-  }
+const table = data.split('\n').slice(1);
+table.forEach(row => {
+  col = row.split(" ");
+  hours = col[0];
+  xAxe.push(hours);
+  temp = col[1];
+  yAxe.push(temp);
+});
+return{xAxe, yAxe};
+}
 
   </script>
 </body>
