@@ -16,7 +16,7 @@ if (req.readyState == 4) {
     f = parseInt((dom('.now span').text()))
     // console.log(Math.round((f - 32) * 0.5556));
 
-    inv = setInterval(timer, 1000);
+    inv = setInterval(timer, 60000);
     function timer() {
         var today = new Date();
         var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
